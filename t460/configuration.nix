@@ -111,7 +111,7 @@
     isNormalUser = true;
     description = "enei";
     extraGroups = [ "networkmanager" "wheel" ];
-    shell = pkgs.nushell;
+    shell = pkgs.fish;
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -171,7 +171,7 @@
   
   # Storage optimization and general nix settings
   nix = {
-    registry.nixpkgs.flake = nixpkgs;
+    # registry.nixpkgs.flake = pkgs;
     settings = {
       auto-optimise-store = true;
       experimental-features = [ "nix-command" "flakes" ];

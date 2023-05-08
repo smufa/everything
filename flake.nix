@@ -10,7 +10,12 @@
   outputs = { self, nixpkgs, ... }: {
     nixosConfigurations.t460 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      modules = [ ./configuration.nix ];
+      modules = [ ./t460/configuration.nix ];
+    };
+
+    nixosConfigurations.malina = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [ ./malina/configuration.nix ];
     };
   };
 }
