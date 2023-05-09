@@ -17,5 +17,10 @@
       system = "x86_64-linux";
       modules = [ ./malina/configuration.nix ];
     };
+
+    nixosConfigurations.kista = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [ ./kista/configuration.nix ];
+    };
   };
 }
