@@ -10,8 +10,8 @@
   # Exclude default gnome packages
   environment.gnome.excludePackages = (with pkgs; [
     gnome-tour
-  ]) ++ (with pkgs.gnome; [
     gnome-text-editor
+  ]) ++ (with pkgs.gnome; [
     gedit # text editor
     epiphany # web browser
     geary # email reader

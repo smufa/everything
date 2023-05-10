@@ -61,17 +61,7 @@
     #  thunderbird
     ];
   };
-  # home-manager.users.enei = {
-  #   # programs.neovim = {
-  #   #   enable = true;
-  #   #   plugins = [
-  #   #     pkgs.vimPlugins.conjure
-  #   #     pkgs.vimPlugins.rainbow
-  #   #   ];
-  #   # };
-  #   home.stateVersion = "22.11";
-  # };
-  
+
   # Enable fish
   programs.fish = {
     enable = true;
