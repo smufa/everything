@@ -40,9 +40,9 @@
   };
 
   networking.hostName = "t460"; # Define your hostname.
-  networking.hosts = {
-    "192.168.64.69" = [ "malina" ];
-  };
+  # networking.hosts = {
+  #   "192.168.64.69" = [ "malina" ];
+  # };
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -52,6 +52,11 @@
   #services.printing.drivers = [ pkgs.lpr pkgs.cupswrapper ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  environment.variables = {
+    EDITOR = "hx";
+    VISUAL = "hx";
+  };
+  programs.fish.enable = true;
   users.users.enei = {
     isNormalUser = true;
     description = "enei";
@@ -62,29 +67,8 @@
     ];
   };
 
-  # Enable fish
-  programs.fish = {
-    enable = true;
-    shellAbbrs = {
-      l = "exa --icons";
-      ll = "exa --icons --long --header --git --no-user";
-      lh = "exa --icons --long --header --git --all";
-      lll = "exa --icons --tree --level=3 --header --git";
-      llh = "exa --icons --tree --level=3 --header --git --all --long";
-    };
-  };
-  programs.starship.enable = true;
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
   # List services that you want to enable:
 
