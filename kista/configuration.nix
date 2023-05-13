@@ -26,7 +26,36 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  # networking.networkmanager.enable = true;
+  networking.networkmanager.unmanaged = [ "enp6s0" "wlp7s0" ];
+  networking = {
+    wireless = {
+      enable = true;
+      networks.LANdalf.psk = "INNBOX3130305000979";
+      interfaces = [ "wlp7s0" ];
+    };
+    interfaces = {
+      enp6s0 = {
+        ipv4.addresses = [{
+          address = "84.255.199.103";
+          prefixLength = 18;
+        }];
+      };
+      wlp7s0 = {
+        ipv4.addresses = [{
+          address = "192.168.64.69";
+          prefixLength = 24;
+        }];
+        ipv4.routes = [{
+          address = "192.168.64.0";
+          prefixLength = 24;
+          via = "192.168.64.1";
+        }];
+      };
+    };
+    defaultGateway = "84.255.192.1";
+    nameservers = [ "84.255.209.79" ];
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   environment.variables = {
@@ -51,7 +80,8 @@
   # Nvidia
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.opengl.enable = true;
-  hardware.nvidia.modesetting.enable = true;
+  # hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
   hardware.nvidia.powerManagement.enable = true;
 
   # Enable flatpak
