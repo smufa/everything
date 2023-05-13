@@ -29,6 +29,11 @@
   networking.networkmanager.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  environment.variables = {
+    EDITOR = "hx";
+    VISUAL = "hx";
+  };
+  programs.fish.enable = true;
   users.users.enei = {
     isNormalUser = true;
     description = "enei";
@@ -39,19 +44,6 @@
     #  thunderbird
     ];
   };
-
-  # Enable fish
-  programs.fish = {
-    enable = true;
-    shellAbbrs = {
-      l = "exa --icons";
-      ll = "exa --icons --long --header --git --no-user";
-      lh = "exa --icons --long --header --git --all";
-      lll = "exa --icons --tree --level=3 --header --git";
-      llh = "exa --icons --tree --level=3 --header --git --all --long";
-    };
-  };
-  programs.starship.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

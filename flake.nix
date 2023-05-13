@@ -12,21 +12,21 @@
     nixosConfigurations.t460 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [ 
-      ./t460/configuration.nix 
+        ./t460/configuration.nix 
 
-      ({ pkgs, ...}: {
-        nix.registry.nixpkgs.flake = nixpkgs;
-      })
+        ({ pkgs, ...}: {
+          nix.registry.nixpkgs.flake = nixpkgs;
+        })
 
-      home-manager.nixosModules.home-manager
-      {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.users.enei = import ./lib/home.nix;
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.enei = import ./lib/home.nix;
 
-        # Optionally, use home-manager.extraSpecialArgs to pass
-        # arguments to home.nix
-      }
+          # Optionally, use home-manager.extraSpecialArgs to pass
+          # arguments to home.nix
+        }
       ];
     };
 
@@ -37,7 +37,30 @@
 
     nixosConfigurations.kista = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      modules = [ ./kista/configuration.nix ];
+      modules = [ 
+        ./kista/configuration.nix
+        ({ pkgs, ...}: {
+          nix.registry.nixpkgs.flake = nixpkgs;
+        })
+
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.enei = import ./lib/home.nix;
+          home-manager.users.enei = {
+            programs.helix = {
+              settings = {
+                theme = "catpuccin_frappe";
+                editor.true-color = true;
+              };
+            };
+          };
+
+          # Optionally, use home-manager.extraSpecialArgs to pass
+          # arguments to home.nix
+        }
+      ];
     };
   };
 }
