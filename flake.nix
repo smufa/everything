@@ -5,7 +5,6 @@
     home-manager = {
       url = github:nix-community/home-manager;
       inputs.nixpkgs.follows = "nixpkgs";
-      # inputs.nixpkgs.follows = "nixpkgs";
     };
   };
   outputs = inputs@{ self, nixpkgs, home-manager, ... }: {
@@ -22,7 +21,7 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.enei = import ./lib/home.nix;
+          home-manager.users.enei = import ./lib/home.nix { pkgs = builtins.getAttr "x86_64-linux" nixpkgs.legacyPackages; hx-theme = "pop-dark"; };
 
           # Optionally, use home-manager.extraSpecialArgs to pass
           # arguments to home.nix
@@ -47,15 +46,7 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.enei = import ./lib/home.nix;
-          home-manager.users.enei = {
-            programs.helix = {
-              settings = {
-                theme = "catpuccin_frappe";
-                editor.true-color = true;
-              };
-            };
-          };
+          home-manager.users.enei = import ./lib/home.nix { pkgs = builtins.getAttr "x86_64-linux" nixpkgs.legacyPackages; hx-theme = "catpuccin_frappe"; };
 
           # Optionally, use home-manager.extraSpecialArgs to pass
           # arguments to home.nix

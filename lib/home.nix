@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, hx-theme, ... }: {
   # programs.neovim = {
   #   enable = true;
   #   plugins = [
@@ -13,7 +13,8 @@
   programs.helix = {
     enable = true;
     settings = {
-      theme = "pop-dark";
+      theme = hx-theme;
+      editor.true-color = true;
     };
   };
   
@@ -23,7 +24,7 @@
       set fish_greeting # Disable greeting
     '';
     shellAbbrs = {
-      l = "exa --icons";
+      # l = "exa --icons";
       ll = "exa --icons --long --header --git --no-user";
       lh = "exa --icons --long --header --git --all";
       lll = "exa --icons --tree --level=3 --header --git";
