@@ -1,12 +1,10 @@
-{ ... }:
-
-{
+{...}: {
   # Storage optimization and general nix settings
   nix = {
     # registry.nixpkgs.flake = pkgs;
     settings = {
       auto-optimise-store = true;
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = ["nix-command" "flakes"];
     };
     gc = {
       automatic = true;

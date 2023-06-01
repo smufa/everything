@@ -1,4 +1,8 @@
-{ pkgs, hx-theme, ... }: {
+{
+  pkgs,
+  hx-theme,
+  ...
+}: {
   # programs.neovim = {
   #   enable = true;
   #   plugins = [
@@ -9,6 +13,7 @@
   home.packages = with pkgs; [
     fzf
     grc
+    nil
   ];
   programs.helix = {
     enable = true;
@@ -16,8 +21,14 @@
       theme = hx-theme;
       editor.true-color = true;
     };
+    languages = [
+      {
+        name = "nix";
+        language-server.command = "nil";
+      }
+    ];
   };
-  
+
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
@@ -31,14 +42,38 @@
       llh = "exa --icons --tree --level=3 --header --git --all --long";
     };
     plugins = [
-      { name = "grc"; src = pkgs.fishPlugins.grc.src; }
-      { name = "tide"; src = pkgs.fishPlugins.tide.src; }
-      { name = "colored-man-pages"; src = pkgs.fishPlugins.colored-man-pages.src; }
-      { name = "autopair-fish"; src = pkgs.fishPlugins.autopair-fish.src; }
-      { name = "sponge"; src = pkgs.fishPlugins.sponge.src; }
-      { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src; }
-      { name = "forgit"; src = pkgs.fishPlugins.forgit.src; }
-      { name = "done"; src = pkgs.fishPlugins.done.src; }
+      {
+        name = "grc";
+        src = pkgs.fishPlugins.grc.src;
+      }
+      {
+        name = "tide";
+        src = pkgs.fishPlugins.tide.src;
+      }
+      {
+        name = "colored-man-pages";
+        src = pkgs.fishPlugins.colored-man-pages.src;
+      }
+      {
+        name = "autopair-fish";
+        src = pkgs.fishPlugins.autopair-fish.src;
+      }
+      {
+        name = "sponge";
+        src = pkgs.fishPlugins.sponge.src;
+      }
+      {
+        name = "fzf-fish";
+        src = pkgs.fishPlugins.fzf-fish.src;
+      }
+      {
+        name = "forgit";
+        src = pkgs.fishPlugins.forgit.src;
+      }
+      {
+        name = "done";
+        src = pkgs.fishPlugins.done.src;
+      }
     ];
   };
   home.stateVersion = "22.11";

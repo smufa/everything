@@ -1,17 +1,18 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../lib/gnome.nix
-      ../lib/space-optimization.nix
-      ../lib/locale.nix
-    ];
+  config,
+  pkgs,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ../lib/gnome.nix
+    ../lib/space-optimization.nix
+    ../lib/locale.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -27,34 +28,40 @@
 
   # Enable networking
   # networking.networkmanager.enable = true;
-  networking.networkmanager.unmanaged = [ "enp6s0" "wlp7s0" ];
+  networking.networkmanager.unmanaged = ["enp6s0" "wlp7s0"];
   networking = {
     wireless = {
       enable = true;
       networks.LANdalf.psk = "INNBOX3130305000979";
-      interfaces = [ "wlp7s0" ];
+      interfaces = ["wlp7s0"];
     };
     interfaces = {
       enp6s0 = {
-        ipv4.addresses = [{
-          address = "84.255.199.103";
-          prefixLength = 18;
-        }];
+        ipv4.addresses = [
+          {
+            address = "84.255.199.103";
+            prefixLength = 18;
+          }
+        ];
       };
       wlp7s0 = {
-        ipv4.addresses = [{
-          address = "192.168.64.69";
-          prefixLength = 24;
-        }];
-        ipv4.routes = [{
-          address = "192.168.64.0";
-          prefixLength = 24;
-          via = "192.168.64.1";
-        }];
+        ipv4.addresses = [
+          {
+            address = "192.168.64.69";
+            prefixLength = 24;
+          }
+        ];
+        ipv4.routes = [
+          {
+            address = "192.168.64.0";
+            prefixLength = 24;
+            via = "192.168.64.1";
+          }
+        ];
       };
     };
     defaultGateway = "84.255.192.1";
-    nameservers = [ "84.255.209.79" ];
+    nameservers = ["84.255.209.79"];
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -66,11 +73,11 @@
   users.users.enei = {
     isNormalUser = true;
     description = "enei";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
     shell = pkgs.fish;
     packages = with pkgs; [
       firefox
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
@@ -78,7 +85,7 @@
   nixpkgs.config.allowUnfree = true;
 
   # Nvidia
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = ["nvidia"];
   hardware.opengl.enable = true;
   # hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
@@ -113,5 +120,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.11"; # Did you read the comment?
-
 }

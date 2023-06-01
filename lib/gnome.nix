@@ -1,24 +1,23 @@
-{ pkgs, ... }:
-
-{
-  
+{pkgs, ...}: {
   # Enable the GNOME Desktop Environment.
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
   # Exclude default gnome packages
-  environment.gnome.excludePackages = (with pkgs; [
-    gnome-tour
-    gnome-text-editor
-  ]) ++ (with pkgs.gnome; [
-    gedit # text editor
-    epiphany # web browser
-    geary # email reader
-    tali # poker game
-    hitori # sudoku game
-    atomix # puzzle game
-  ]);
+  environment.gnome.excludePackages =
+    (with pkgs; [
+      gnome-tour
+      gnome-text-editor
+    ])
+    ++ (with pkgs.gnome; [
+      gedit # text editor
+      epiphany # web browser
+      geary # email reader
+      tali # poker game
+      hitori # sudoku game
+      atomix # puzzle game
+    ]);
 
   # Configure keymap in X11 (Not sure this does anything)
   services.xserver = {
@@ -45,27 +44,30 @@
 
   # Extra fonts
   fonts.fonts = with pkgs; [
-    (nerdfonts.override { fonts = [ "SourceCodePro" ]; })
+    (nerdfonts.override {fonts = ["SourceCodePro"];})
   ];
-  
+
   # Enable uinput for emulated input devices
   hardware.uinput.enable = true;
-  
+
   # List packages installed in system profile. To search, run:
-  environment.systemPackages = (with pkgs; [
-    exa
-    bat
-    ripgrep
-    papirus-icon-theme
-    distrobox
-    git
-    ntfs3g
-  ]) ++ (with pkgs.gnome; [
-    gnome-terminal
-    gnome-tweaks
-    gnome-settings-daemon    
-    ghex
-  ]) ++ (with pkgs.gnomeExtensions; [
-    appindicator
-  ]);
+  environment.systemPackages =
+    (with pkgs; [
+      exa
+      bat
+      ripgrep
+      papirus-icon-theme
+      distrobox
+      git
+      ntfs3g
+    ])
+    ++ (with pkgs.gnome; [
+      gnome-terminal
+      gnome-tweaks
+      gnome-settings-daemon
+      ghex
+    ])
+    ++ (with pkgs.gnomeExtensions; [
+      appindicator
+    ]);
 }
