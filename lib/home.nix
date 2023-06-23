@@ -21,12 +21,11 @@
       theme = hx-theme;
       editor.true-color = true;
     };
-    languages = [
-      {
-        name = "nix";
+    languages = {
+      nix = {
         language-server.command = "nil";
-      }
-    ];
+      };
+    };
   };
 
   programs.fish = {

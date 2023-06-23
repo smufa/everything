@@ -63,6 +63,9 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
   #services.printing.drivers = [ pkgs.lpr pkgs.cupswrapper ];
+  
+  # Extend life of SSD
+  services.fstrim.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   environment.variables = {
