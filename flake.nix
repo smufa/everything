@@ -42,6 +42,29 @@
       modules = [./malina/configuration.nix];
     };
 
+    nixosConfigurations.seymour = nixpkgs.lib.nixosSystem {
+      modules = [
+        ./seymour/configuration.nix
+      
+        ({pkgs, ...}: {
+          nix.registry.nixpkgs.flake = nixpkgs;
+        })
+
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.enei = import ./lib/home.nix {
+            pkgs = builtins.getAttr "x86_64-linux" nixpkgs.legacyPackages;
+            hx-theme = "pop-dark";
+          };
+
+          # Optionally, use home-manager.extraSpecialArgs to pass
+          # arguments to home.nix
+        }
+      ];
+    };
+
     nixosConfigurations.kista = nixpkgs.lib.nixosSystem {
       hostPlatform = "x86_64-linux";
       modules = [
