@@ -14,6 +14,8 @@
     fzf
     grc
     nil
+    manix
+    # gitless
   ];
   programs.helix = {
     enable = true;
