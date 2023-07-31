@@ -18,6 +18,15 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="input", ATTRS{name}=="PC Speaker", ENV{DEVNAME}!="", TAG+="uaccess"
+  '';
+  environment.systemPackages = with pkgs; [
+    beep
+  ];
+
+  # Extend life of SSD
+  services.fstrim.enable = true;
 
   networking.hostName = "kista"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -26,43 +35,55 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Enable networking
-  # networking.networkmanager.enable = true;
-  networking.networkmanager.unmanaged = ["enp6s0" "wlp7s0"];
-  networking = {
-    wireless = {
+  virtualisation = {
+    podman = {
       enable = true;
-      networks.LANdalf.psk = "INNBOX3130305000979";
-      interfaces = ["wlp7s0"];
+      # Create a `docker` alias for podman, to use it as a drop-in replacement
+      dockerCompat = true;
+      # Required for containers under podman-compose to be able to talk to each other.
+      defaultNetwork.settings.dns_enabled = true;
     };
-    interfaces = {
-      enp6s0 = {
-        ipv4.addresses = [
-          {
-            address = "84.255.199.103";
-            prefixLength = 18;
-          }
-        ];
-      };
-      wlp7s0 = {
-        ipv4.addresses = [
-          {
-            address = "192.168.64.69";
-            prefixLength = 24;
-          }
-        ];
-        ipv4.routes = [
-          {
-            address = "192.168.64.0";
-            prefixLength = 24;
-            via = "192.168.64.1";
-          }
-        ];
-      };
-    };
-    defaultGateway = "84.255.192.1";
-    nameservers = ["84.255.209.79"];
+    # waydroid.enable = true;
+    # lxd.enable = true;
   };
+
+  # Enable networking
+  networking.networkmanager.enable = true;
+  # networking.networkmanager.unmanaged = ["enp6s0" "wlp7s0"];
+  # networking = {
+  #   wireless = {
+  #     enable = true;
+  #     networks.LANdalf.psk = "INNBOX3130305000979";
+  #     interfaces = ["wlp7s0"];
+  #   };
+  #   interfaces = {
+  #     enp6s0 = {
+  #       ipv4.addresses = [
+  #         {
+  #           address = "84.255.199.103";
+  #           prefixLength = 18;
+  #         }
+  #       ];
+  #     };
+  #     wlp7s0 = {
+  #       ipv4.addresses = [
+  #         {
+  #           address = "192.168.64.69";
+  #           prefixLength = 24;
+  #         }
+  #       ];
+  #       ipv4.routes = [
+  #         {
+  #           address = "192.168.64.0";
+  #           prefixLength = 24;
+  #           via = "192.168.64.1";
+  #         }
+  #       ];
+  #     };
+  #   };
+  #   defaultGateway = "84.255.192.1";
+  #   nameservers = ["84.255.209.79"];
+  # };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   environment.variables = {
@@ -70,15 +91,26 @@
     VISUAL = "hx";
   };
   programs.fish.enable = true;
-  users.users.enei = {
-    isNormalUser = true;
-    description = "enei";
-    extraGroups = ["networkmanager" "wheel"];
-    shell = pkgs.fish;
-    packages = with pkgs; [
-      firefox
-      #  thunderbird
-    ];
+  users.users = {
+    enei = {
+      isNormalUser = true;
+      description = "enei";
+      extraGroups = ["networkmanager" "wheel"];
+      shell = pkgs.fish;
+      packages = with pkgs; [
+        firefox
+        #  thunderbird
+      ];
+    };
+    tina = {
+      isNormalUser = true;
+      description = "enei";
+      extraGroups = ["networkmanager" "wheel"];
+      packages = with pkgs; [
+        firefox
+        #  thunderbird
+      ];
+    };
   };
 
   # Allow unfree packages
