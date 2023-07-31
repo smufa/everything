@@ -76,7 +76,7 @@
   users.users.enei = {
     isNormalUser = true;
     description = "enei";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = ["networkmanager" "wheel" "uinput" "input"];
     shell = pkgs.fish;
     packages = with pkgs; [
       #  thunderbird

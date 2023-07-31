@@ -69,5 +69,6 @@
     ])
     ++ (with pkgs.gnomeExtensions; [
       appindicator
+      caffeine
     ]);
 }
