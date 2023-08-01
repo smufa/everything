@@ -88,7 +88,7 @@
         }
         { 
           # kista enei
-          publicKey = "+s79yfxS1NaoPhmRY2Rr8I2Ma+dL6FnEqm0jo49tjUs=";
+          publicKey = "48pSfQjFSFzNQ/aeLQQU39g6RzqId/fvp8Z82GzCZ0A=";
           # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
           allowedIPs = [ "10.1.1.3/32" ];
         }

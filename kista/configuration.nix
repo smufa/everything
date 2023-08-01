@@ -103,12 +103,13 @@
 
         {
           # Public key of the server (not a file path).
-          publicKey = "+s79yfxS1NaoPhmRY2Rr8I2Ma+dL6FnEqm0jo49tjUs=";
+          publicKey = "LYQSaUhHQuI/sr7FHdiZMP1UviDobEYjGxWRGjXni1U=";
 
           allowedIPs = [ "10.1.1.0/24" ];
 
           # Set this to the server IP and port.
-          endpoint = "192.168.64.69:23567"; # ToDo: route to endpoint not automatically configured https://wiki.archlinux.org/index.php/WireGuard#Loop_routing https://discourse.nixos.org/t/solved-minimal-firewall-setup-for-wireguard-client/7577
+          # endpoint = "192.168.64.69:23567"; # ToDo: route to endpoint not automatically configured https://wiki.archlinux.org/index.php/WireGuard#Loop_routing https://discourse.nixos.org/t/solved-minimal-firewall-setup-for-wireguard-client/7577
+          endpoint = "84.255.199.103:23567"; # ToDo: route to endpoint not automatically configured https://wiki.archlinux.org/index.php/WireGuard#Loop_routing https://discourse.nixos.org/t/solved-minimal-firewall-setup-for-wireguard-client/7577
 
           # Send keepalives every 25 seconds. Important to keep NAT tables alive.
           persistentKeepalive = 25;
@@ -127,7 +128,7 @@
     enei = {
       isNormalUser = true;
       description = "enei";
-      extraGroups = ["networkmanager" "wheel"];
+      extraGroups = ["networkmanager" "wheel" "uinput" "input"];
       shell = pkgs.fish;
       packages = with pkgs; [
         firefox
@@ -155,6 +156,7 @@
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
   hardware.nvidia.powerManagement.enable = true;
+  services.xserver.displayManager.gdm.autoSuspend = false;
 
   # Enable flatpak
   services.flatpak.enable = true;
@@ -176,7 +178,7 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
