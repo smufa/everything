@@ -23,13 +23,25 @@
   '';
   environment.systemPackages = with pkgs; [
     beep
-    distrobox
-    xorg.xhost
+    # xhost
   ];
+  
+  hardware.opengl = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      vaapiIntel
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+  };
+  
+  hardware.trackpoint.enable = true;
+  hardware.trackpoint.emulateWheel = true;
 
-  environment.shellInit = ''
-    [ -n "$DISPLAY" ] && xhost +si:localuser:$USER || true
-  '';
+  # environment.shellInit = ''
+  #   [ -n "$DISPLAY" ] && xhost +si:localuser:$USER || true
+  # '';
 
   # Setup keyfile
   boot.initrd.secrets = {
@@ -53,12 +65,44 @@
   };
 
   networking.hostName = "t460"; # Define your hostname.
-  # networking.hosts = {
-  #   "192.168.64.69" = [ "malina" ];
-  # };
+  networking.hosts = {
+    "192.168.64.69" = [ "seymour" ];
+  };
 
   # Enable networking
   networking.networkmanager.enable = true;
+  
+  networking.wireguard.interfaces = {
+    siska = {
+      # Determines the IP address and subnet of the client's end of the tunnel interface.
+      ips = [ "10.1.1.2/24" ];
+      listenPort = 23567; # to match firewall allowedUDPPorts (without this wg uses random port numbers)
+
+      # Path to the private key file.
+      #
+      # Note: The private key can also be included inline via the privateKey option,
+      # but this makes the private key world-readable; thus, using privateKeyFile is
+      # recommended.
+      privateKeyFile = "/home/enei/wireguard-keys/private";
+
+      peers = [
+        # For a client configuration, one peer entry for the server will suffice.
+
+        {
+          # Public key of the server (not a file path).
+          publicKey = "LYQSaUhHQuI/sr7FHdiZMP1UviDobEYjGxWRGjXni1U=";
+
+          allowedIPs = [ "10.1.1.0/24" ];
+
+          # Set this to the server IP and port.
+          endpoint = "84.255.199.103:23567"; # ToDo: route to endpoint not automatically configured https://wiki.archlinux.org/index.php/WireGuard#Loop_routing https://discourse.nixos.org/t/solved-minimal-firewall-setup-for-wireguard-client/7577
+
+          # Send keepalives every 25 seconds. Important to keep NAT tables alive.
+          persistentKeepalive = 25;
+        }
+      ];
+    };
+  };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -95,10 +139,10 @@
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ 80 8080 4173 3000 ];
-  # networking.firewall.allowedUDPPorts = [ 80 8080 4173 3000 ];
+  networking.firewall.allowedTCPPorts = [ 23567 ];
+  networking.firewall.allowedUDPPorts = [ 23567 ];
   # Or disable the firewall altogether.
-  networking.firewall.enable = false;
+  networking.firewall.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
