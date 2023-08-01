@@ -75,7 +75,6 @@
     };
 
     nixosConfigurations.kista = nixpkgs.lib.nixosSystem {
-      hostPlatform = "x86_64-linux";
       modules = [
         ./kista/configuration.nix
         ({pkgs, ...}: {
