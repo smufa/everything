@@ -85,6 +85,38 @@
   #   nameservers = ["84.255.209.79"];
   # };
 
+  networking.wireguard.interfaces = {
+    siska = {
+      # Determines the IP address and subnet of the client's end of the tunnel interface.
+      ips = [ "10.1.1.3/24" ];
+      listenPort = 23567; # to match firewall allowedUDPPorts (without this wg uses random port numbers)
+
+      # Path to the private key file.
+      #
+      # Note: The private key can also be included inline via the privateKey option,
+      # but this makes the private key world-readable; thus, using privateKeyFile is
+      # recommended.
+      privateKeyFile = "/home/enei/wireguard-keys/private";
+
+      peers = [
+        # For a client configuration, one peer entry for the server will suffice.
+
+        {
+          # Public key of the server (not a file path).
+          publicKey = "+s79yfxS1NaoPhmRY2Rr8I2Ma+dL6FnEqm0jo49tjUs=";
+
+          allowedIPs = [ "10.1.1.0/24" ];
+
+          # Set this to the server IP and port.
+          endpoint = "192.168.64.69:23567"; # ToDo: route to endpoint not automatically configured https://wiki.archlinux.org/index.php/WireGuard#Loop_routing https://discourse.nixos.org/t/solved-minimal-firewall-setup-for-wireguard-client/7577
+
+          # Send keepalives every 25 seconds. Important to keep NAT tables alive.
+          persistentKeepalive = 25;
+        }
+      ];
+    };
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   environment.variables = {
     EDITOR = "hx";
