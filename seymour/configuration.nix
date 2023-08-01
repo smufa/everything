@@ -61,6 +61,35 @@
     nameservers = ["84.255.209.79"];
   };
 
+  # Wireguard setup
+  networking.wireguard.interfaces = {
+    # "wg0" is the network interface name. You can name the interface arbitrarily.
+    wg0 = {
+      # Determines the IP address and subnet of the server's end of the tunnel interface.
+      ips = [ "10.1.1.1/24" ];
+
+      # The port that WireGuard listens to. Must be accessible by the client.
+      listenPort = 23567;
+
+      # Path to the private key file.
+      #
+      # Note: The private key can also be included inline via the privateKey option,
+      # but this makes the private key world-readable; thus, using privateKeyFile is
+      # recommended.
+      privateKeyFile = "/home/enei/.wireguard-keys/private";
+
+      peers = [
+        # List of allowed peers.
+        { 
+          # laptop enei
+          publicKey = "KwVT9IJWpvU/qg0LAe23BcLw4IJ8efeJS7xJ0ijhkxQ=";
+          # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
+          allowedIPs = [ "10.1.1.2/32" ];
+        }
+      ];
+    };
+  };
+
   # Configure keymap in X11
   services.xserver = {
     layout = "us";
@@ -81,8 +110,14 @@
       };
       tina = {
         isNormalUser = true;
-        description = "najaci tipica";
+        description = "najaca tipica";
         extraGroups = [ "networkmanager" "wheel" ];
+        shell = pkgs.fish;
+      };
+      lan = {
+        isNormalUser = true;
+        extraGroups = [ "networkmanager" "wheel" ];
+        shell = pkgs.fish;
       };
     };
   };
@@ -114,8 +149,8 @@
   programs.ssh.startAgent = true;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
-  networking.firewall.allowedUDPPorts = [ 80 443 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 23567];
+  networking.firewall.allowedUDPPorts = [ 80 443 23567];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
@@ -131,7 +166,7 @@
       serverName = "enei.zaanimivo.xyz";
       forceSSL = true;
       enableACME = true;
-      root = "/home/enei/public";
+      root = "/page/enei";
     };
   };
 
