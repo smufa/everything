@@ -89,6 +89,10 @@
             pkgs = builtins.getAttr "x86_64-linux" nixpkgs.legacyPackages;
             hx-theme = "catpuccin_frappe";
           };
+          home-manager.users.tina = import ./lib/home_tina.nix {
+            pkgs = builtins.getAttr "x86_64-linux" nixpkgs.legacyPackages;
+            hx-theme = "catpuccin_frappe";
+          };
 
           # Optionally, use home-manager.extraSpecialArgs to pass
           # arguments to home.nix
