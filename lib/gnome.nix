@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{config, pkgs, lib, ...}: 
+lib.mkIf (config.everything.gnome.enable) {
   # Enable the GNOME Desktop Environment.
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
@@ -9,8 +10,11 @@
     (with pkgs; [
       gnome-tour
       gnome-text-editor
+      gnome-console
+      xterm
     ])
     ++ (with pkgs.gnome; [
+      gnome-contacts
       gedit # text editor
       epiphany # web browser
       geary # email reader
@@ -53,13 +57,8 @@
   # List packages installed in system profile. To search, run:
   environment.systemPackages =
     (with pkgs; [
-      exa
-      bat
-      ripgrep
       papirus-icon-theme
-      distrobox
-      git
-      ntfs3g
+      drawing
     ])
     ++ (with pkgs.gnome; [
       gnome-terminal
