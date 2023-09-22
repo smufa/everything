@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{config, lib, pkgs, ...}: 
+lib.mkIf (config.everything.space-optimization.enable){
   # Storage optimization and general nix settings
   nix = {
     registry.nixpkgs.flake = pkgs;

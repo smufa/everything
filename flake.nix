@@ -14,8 +14,15 @@
     ...
   }: {
     formatter."x86_64-linux" = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+    
+    nixosModules.everything = {pkgs, ...}@args: {
+      imports = [ (import ./options.nix { pkgs = pkgs; home = home-manager;}) ];
+    };
+    
     nixosConfigurations.t460 = nixpkgs.lib.nixosSystem {
       modules = [
+        self.nixosModules.everything
+        
         ./t460/configuration.nix
 
         ({pkgs, ...}: {

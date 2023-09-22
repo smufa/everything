@@ -1,4 +1,5 @@
-{...}: {
+{config, lib, ...}: 
+lib.mkIf (config.everything.slo-locale.enable){
   # Set your time zone.
   time.timeZone = "Europe/Ljubljana";
 
