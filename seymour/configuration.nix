@@ -86,6 +86,12 @@
           # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
           allowedIPs = [ "10.1.1.2/32" ];
         }
+        { 
+          # kista enei
+          publicKey = "48pSfQjFSFzNQ/aeLQQU39g6RzqId/fvp8Z82GzCZ0A=";
+          # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
+          allowedIPs = [ "10.1.1.3/32" ];
+        }
       ];
     };
   };
