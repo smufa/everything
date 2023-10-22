@@ -56,6 +56,7 @@
     VISUAL = "hx";
   };
   programs.fish.enable = true;
+  programs.git.enable = true;
 
   nixpkgs.config.allowUnfree = true;
 
