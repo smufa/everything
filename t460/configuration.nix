@@ -19,6 +19,7 @@
     intel-hardware-acceleration.enable = true;
     vpn.enable = true;
     podman.enable = true;
+    mds.enable = true;
     users.enei = {
       admin = true;
       shell = pkgs.fish;
