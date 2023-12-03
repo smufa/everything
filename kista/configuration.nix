@@ -19,16 +19,21 @@
     # vpn.enable = true;
     podman.enable = true;
     mdns.enable = true;
-    # users.enei = {
-    #   admin = true;
-    #   shell = pkgs.fish;
-    # };
+    users.enei = {
+      admin = true;
+      shell = pkgs.fish;
+    };
+    users.tina = {
+      admin = true;
+      shell = pkgs.fish;
+    };
   };
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="input", ATTRS{name}=="PC Speaker", ENV{DEVNAME}!="", TAG+="uaccess"
   '';
+
   environment.systemPackages = with pkgs; [
     beep
   ];
@@ -123,30 +128,6 @@
     VISUAL = "hx";
   };
   programs.fish.enable = true;
-  users.users = {
-    enei = {
-      isNormalUser = true;
-      description = "Enei";
-      extraGroups = ["networkmanager" "wheel" "uinput" "input"];
-      shell = pkgs.fish;
-      packages = with pkgs; [
-        firefox-wayland
-        ungoogled-chromium
-        epiphany
-        #  thunderbird
-      ];
-    };
-    tina = {
-      isNormalUser = true;
-      description = "Tina";
-      extraGroups = ["networkmanager" "wheel"];
-      shell = pkgs.fish;
-      packages = with pkgs; [
-        firefox
-        #  thunderbird
-      ];
-    };
-  };
 
   services.xserver.displayManager.gdm.autoSuspend = false;
 

@@ -71,11 +71,6 @@
               pkgs = builtins.getAttr "x86_64-linux" nixpkgs.legacyPackages;
               hx-theme = "dracula";
             };
-            home-manager.users.lan = import ./lib/home.nix {
-              pkgs = builtins.getAttr "x86_64-linux" nixpkgs.legacyPackages;
-              hx-theme = "dracula";
-            };
-
 
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home.nix
