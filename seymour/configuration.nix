@@ -16,6 +16,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
 
   networking.hostName = "seymour"; # Define your hostname.
   # Enables wireless support via wpa_supplicant.
@@ -71,6 +72,15 @@
       # The port that WireGuard listens to. Must be accessible by the client.
       listenPort = 23567;
 
+      postSetup = ''
+        ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.1.1.0/24 -o wg0 -j MASQUERADE
+      '';
+
+      # This undoes the above command
+      postShutdown = ''
+        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.1.1.0/24 -o wg0 -j MASQUERADE
+      '';
+
       # Path to the private key file.
       #
       # Note: The private key can also be included inline via the privateKey option,
@@ -95,6 +105,12 @@
       ];
     };
   };
+
+  # services.rss-bridge = {
+  #   enable = true;
+  #   whitelist = ["Facebook" "Instagram"];
+  #   virtualHost = "rss.zaanimivo.xyz";
+  # };
 
   # Configure keymap in X11
   services.xserver = {
@@ -155,8 +171,8 @@
   programs.ssh.startAgent = true;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 80 443 23567];
-  networking.firewall.allowedUDPPorts = [ 80 443 23567];
+  networking.firewall.allowedTCPPorts = [ 80 443 23567 8000 ];
+  networking.firewall.allowedUDPPorts = [ 80 443 23567 8000 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
@@ -174,6 +190,16 @@
       enableACME = true;
       root = "/page/enei";
     };
+    "zelje.zaanimivo.xyz" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        root = "/var/www/bubu/";
+        extraConfig = ''
+          try_files $uri $uri/ /index.html =404;
+        '';
+      };
+    };
   };
 
   security.acme = {
@@ -181,6 +207,7 @@
     certs = {
       "enei.zaanimivo.xyz".email = "enei.sluga@gmail.com";
       "zaanimivo.xyz".email = "enei.sluga@gmail.com";
+      "zelje.zaanimivo.xyz".email = "enei.sluga@gmail.com";
     };
   };
 
