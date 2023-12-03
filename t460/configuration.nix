@@ -19,6 +19,7 @@
     intel-hardware-acceleration.enable = true;
     vpn.enable = true;
     podman.enable = true;
+    mdns.enable = true;
     users.enei = {
       admin = true;
       shell = pkgs.fish;
@@ -56,14 +57,15 @@
     VISUAL = "hx";
   };
   programs.fish.enable = true;
+  programs.git.enable = true;
 
   nixpkgs.config.allowUnfree = true;
 
   services.flatpak.enable = true;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 23567 ];
-  networking.firewall.allowedUDPPorts = [ 23567 ];
+  networking.firewall.allowedTCPPorts = [ 23567  5173];
+  networking.firewall.allowedUDPPorts = [ 23567 5173];
   networking.firewall.enable = true;
 
   # This value determines the NixOS release from which the default

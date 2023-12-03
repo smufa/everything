@@ -15,6 +15,7 @@ in {
       shell = config.everything.users.${user}.shell;
     };
   }));
+  nix.settings.trusted-users = ["root" "enei" ];
   # home.nixosModules.home-manager
   # {
   #   home-manager.useGlobalPkgs = true;

@@ -20,6 +20,12 @@ with lib;
     intel-hardware-acceleration.enable = mkEnableOption 
     (mdDoc "Whether to enable systemd boot.");
 
+    nvidia-hardware-acceleration.enable = mkEnableOption 
+    (mdDoc "Whether to enable systemd boot.");
+
+    mdns.enable = mkEnableOption 
+    (mdDoc "Whether to enable mds with avahi.");
+
     vpn = {
       enable = mkEnableOption 
       (mdDoc "Whether to enable vpn connection to siska.");
@@ -65,9 +71,11 @@ with lib;
               ./lib/locale.nix
               ./lib/boot.nix
               ./lib/intel-accel.nix
+              ./lib/nvidia-accel.nix
               ./lib/vpn-client.nix
               ./lib/beep.nix
               ./lib/virtualisation.nix
               ./lib/users.nix 
+              ./lib/mdns.nix
             ];
 }

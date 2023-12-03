@@ -69,5 +69,6 @@ lib.mkIf (config.everything.gnome.enable) {
     ++ (with pkgs.gnomeExtensions; [
       appindicator
       caffeine
+      argos
     ]);
 }
