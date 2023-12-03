@@ -15,7 +15,10 @@
     grc
     nil
     manix
-    exa
+    eza
+    firefox-wayland
+    ungoogled-chromium
+    epiphany
     # gitless
   ];
   programs.helix = {
@@ -37,21 +40,21 @@
       set fish_greeting # Disable greeting
     '';
     shellAbbrs = {
-      # l = "exa --icons";
-      ll = "exa --icons --long --header --git --no-user";
-      lh = "exa --icons --long --header --git --all";
-      lll = "exa --icons --tree --level=3 --header --git";
-      llh = "exa --icons --tree --level=3 --header --git --all --long";
+      # l = "eza --icons";
+      ll = "eza --icons --long --header --git --no-user";
+      lh = "eza --icons --long --header --git --all";
+      lll = "eza --icons --tree --level=3 --header --git";
+      llh = "eza --icons --tree --level=3 --header --git --all --long";
     };
     plugins = [
       {
         name = "grc";
         src = pkgs.fishPlugins.grc.src;
       }
-      {
-        name = "tide";
-        src = pkgs.fishPlugins.tide.src;
-      }
+      # {
+      #   name = "tide";
+      #   src = pkgs.fishPlugins.tide.src;
+      # }
       {
         name = "colored-man-pages";
         src = pkgs.fishPlugins.colored-man-pages.src;

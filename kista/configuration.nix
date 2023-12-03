@@ -9,24 +9,40 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../lib/gnome.nix
-    ../lib/space-optimization.nix
-    ../lib/locale.nix
   ];
+  everything = {
+    gnome.enable = true;
+    space-optimization.enable = true; 
+    slo-locale.enable = true;
+    bootloader.enable = true;
+    nvidia-hardware-acceleration.enable = true;
+    # vpn.enable = true;
+    podman.enable = true;
+    mdns.enable = true;
+    users.enei = {
+      admin = true;
+      shell = pkgs.fish;
+    };
+    users.tina = {
+      admin = true;
+      shell = pkgs.fish;
+    };
+  };
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="input", ATTRS{name}=="PC Speaker", ENV{DEVNAME}!="", TAG+="uaccess"
   '';
+
   environment.systemPackages = with pkgs; [
     beep
   ];
+  # boot.initrd.kernelModules = [ "nvidia" ];
+  # boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
 
   # Extend life of SSD
   services.fstrim.enable = true;
+  services.fwupd.enable = true;
 
   networking.hostName = "kista"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -34,18 +50,6 @@
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  virtualisation = {
-    podman = {
-      enable = true;
-      # Create a `docker` alias for podman, to use it as a drop-in replacement
-      dockerCompat = true;
-      # Required for containers under podman-compose to be able to talk to each other.
-      defaultNetwork.settings.dns_enabled = true;
-    };
-    # waydroid.enable = true;
-    # lxd.enable = true;
-  };
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -124,50 +128,11 @@
     VISUAL = "hx";
   };
   programs.fish.enable = true;
-  users.users = {
-    enei = {
-      isNormalUser = true;
-      description = "enei";
-      extraGroups = ["networkmanager" "wheel" "uinput" "input"];
-      shell = pkgs.fish;
-      packages = with pkgs; [
-        firefox
-        ungoogled-chromium
-        #  thunderbird
-      ];
-    };
-    tina = {
-      isNormalUser = true;
-      description = "enei";
-      extraGroups = ["networkmanager" "wheel"];
-      packages = with pkgs; [
-        firefox
-        #  thunderbird
-      ];
-    };
-  };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # Nvidia
-  services.xserver.videoDrivers = ["nvidia"];
-  hardware.opengl.enable = true;
-  hardware.nvidia.modesetting.enable = true;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
-  hardware.nvidia.powerManagement.enable = true;
   services.xserver.displayManager.gdm.autoSuspend = false;
 
   # Enable flatpak
   services.flatpak.enable = true;
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
   # List services that you want to enable:
 
