@@ -105,6 +105,7 @@
     VISUAL = "hx";
   };
   programs.fish.enable = true;
+  programs.git.enable = true;
 
   services.xserver.displayManager.gdm.autoSuspend = false;
 
