@@ -8,14 +8,25 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ../lib/space-optimization.nix
-      ../lib/locale.nix
     ];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  everything = {
+    space-optimization.enable = true; 
+    slo-locale.enable = true;
+    bootloader.enable = true;
+    intel-hardware-acceleration.enable = true;
+    podman.enable = true;
+    mdns.enable = true;
+    users.enei = {
+      admin = true;
+      shell = pkgs.fish;
+    };
+    users.tina = {
+      admin = true;
+      shell = pkgs.fish;
+    };
+  };
+
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
 
   networking.hostName = "seymour"; # Define your hostname.
@@ -106,43 +117,9 @@
     };
   };
 
-  # services.rss-bridge = {
-  #   enable = true;
-  #   whitelist = ["Facebook" "Instagram"];
-  #   virtualHost = "rss.zaanimivo.xyz";
-  # };
-
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
-
   services.logind.lidSwitch = "ignore";
 
   programs.fish.enable = true;
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users = {
-    users = {
-      enei = {
-        isNormalUser = true;
-        description = "najaci tip";
-        extraGroups = [ "networkmanager" "wheel" ];
-        shell = pkgs.fish;
-      };
-      tina = {
-        isNormalUser = true;
-        description = "najaca tipica";
-        extraGroups = [ "networkmanager" "wheel" ];
-        shell = pkgs.fish;
-      };
-      lan = {
-        isNormalUser = true;
-        extraGroups = [ "networkmanager" "wheel" ];
-        shell = pkgs.fish;
-      };
-    };
-  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -153,7 +130,6 @@
     zellij
     git
     neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -167,7 +143,11 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings.PasswordAuthentication = false;
+    settings.KbdInteractiveAuthentication = false;
+  };
   programs.ssh.startAgent = true;
 
   # Open ports in the firewall.

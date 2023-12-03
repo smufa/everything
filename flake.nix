@@ -53,6 +53,8 @@
 
       nixosConfigurations.seymour = nixpkgs.lib.nixosSystem {
         modules = [
+          self.nixosModules.everything
+
           ./seymour/configuration.nix
 
           ({ pkgs, ... }: {
