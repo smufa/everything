@@ -54,7 +54,11 @@ in {
 
   environment.systemPackages = with pkgs; [neovim];
 
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings.PasswordAuthentication = false;
+    settings.KbdInteractiveAuthentication = false;
+  };
 
   users = {
     mutableUsers = true;
@@ -74,21 +78,6 @@ in {
         isNormalUser = true;
         password = "temp";
         extraGroups = ["wheel" "cool"];
-      };
-      lan = {
-        isNormalUser = true;
-        password = "temp";
-        extraGroups = ["cool"];
-      };
-      nina = {
-        isNormalUser = true;
-        password = "temp";
-        extraGroups = [];
-      };
-      katja = {
-        isNormalUser = true;
-        password = "temp";
-        extraGroups = [];
       };
     };
   };

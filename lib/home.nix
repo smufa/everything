@@ -48,10 +48,10 @@
         name = "grc";
         src = pkgs.fishPlugins.grc.src;
       }
-      {
-        name = "tide";
-        src = pkgs.fishPlugins.tide.src;
-      }
+      # {
+      #   name = "tide";
+      #   src = pkgs.fishPlugins.tide.src;
+      # }
       {
         name = "colored-man-pages";
         src = pkgs.fishPlugins.colored-man-pages.src;

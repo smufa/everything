@@ -9,16 +9,23 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../lib/gnome.nix
-    ../lib/space-optimization.nix
-    ../lib/locale.nix
   ];
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  everything = {
+    gnome.enable = true;
+    space-optimization.enable = true; 
+    slo-locale.enable = true;
+    bootloader.enable = true;
+    nvidia-hardware-acceleration.enable = true;
+    # vpn.enable = true;
+    podman.enable = true;
+    mdns.enable = true;
+    # users.enei = {
+    #   admin = true;
+    #   shell = pkgs.fish;
+    # };
+  };
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="input", ATTRS{name}=="PC Speaker", ENV{DEVNAME}!="", TAG+="uaccess"
   '';
@@ -38,18 +45,6 @@
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  virtualisation = {
-    podman = {
-      enable = true;
-      # Create a `docker` alias for podman, to use it as a drop-in replacement
-      dockerCompat = true;
-      # Required for containers under podman-compose to be able to talk to each other.
-      defaultNetwork.settings.dns_enabled = true;
-    };
-    # waydroid.enable = true;
-    # lxd.enable = true;
-  };
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -153,49 +148,10 @@
     };
   };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # Nvidia
-  # Make sure opengl is enabled
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
-
-  # Tell Xorg to use the nvidia driver (also valid for Wayland)
-  services.xserver.videoDrivers = ["nvidia"];
-
-  hardware.nvidia = {
-
-    # Modesetting is needed for most Wayland compositors
-    modesetting.enable = true;
-
-    # Use the open source version of the kernel module
-    # Only available on driver 515.43.04+
-    open = false;
-
-    # Enable the nvidia settings menu
-    nvidiaSettings = true;
-
-    # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-
-    powerManagement.enable = true;    
-  };
   services.xserver.displayManager.gdm.autoSuspend = false;
 
   # Enable flatpak
   services.flatpak.enable = true;
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
   # List services that you want to enable:
 
