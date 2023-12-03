@@ -3,7 +3,7 @@ lib.mkIf (config.everything.vpn.enable) {
   networking.wireguard.interfaces = {
     siska = {
       # Determines the IP address and subnet of the client's end of the tunnel interface.
-      ips = [ "10.1.1.2/24" ];
+      ips = [ config.everything.vpn.address ];
       listenPort = 23567; # to match firewall allowedUDPPorts (without this wg uses random port numbers)
 
       # Path to the private key file.

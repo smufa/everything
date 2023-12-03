@@ -37,6 +37,13 @@ with lib;
           Location of your wireguard privatekey.
         '';
       };
+      address = mkOption {
+        type = types.string;
+        example = "10.1.1.100/24";
+        description = ''
+          Desired address on vpn.
+        '';
+      };
     };
 
     beep.enable = mkEnableOption 

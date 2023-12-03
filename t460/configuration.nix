@@ -1,6 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   config,
   pkgs,
@@ -17,7 +14,10 @@
     slo-locale.enable = true;
     bootloader.enable = true;
     intel-hardware-acceleration.enable = true;
-    vpn.enable = true;
+    vpn = {
+      enable = true;
+      address = "10.1.1.2/24";
+    };
     podman.enable = true;
     mdns.enable = true;
     users.enei = {
@@ -39,9 +39,6 @@
   boot.initrd.luks.devices."luks-1d703e15-9079-4c06-a91f-83713d60fd2f".keyFile = "/crypto_keyfile.bin";
 
   networking.hostName = "t460"; # Define your hostname.
-  networking.hosts = {
-    "192.168.64.69" = [ "seymour" ];
-  };
 
   # Enable networking
   networking.networkmanager.enable = true;  
@@ -64,8 +61,8 @@
   services.flatpak.enable = true;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 23567  5173];
-  networking.firewall.allowedUDPPorts = [ 23567 5173];
+  networking.firewall.allowedTCPPorts = [ 23567 5173 ];
+  networking.firewall.allowedUDPPorts = [ 23567 5173 ];
   networking.firewall.enable = true;
 
   # This value determines the NixOS release from which the default

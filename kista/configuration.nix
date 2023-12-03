@@ -16,7 +16,10 @@
     slo-locale.enable = true;
     bootloader.enable = true;
     nvidia-hardware-acceleration.enable = true;
-    # vpn.enable = true;
+    # vpn = {
+    #   enable = true;
+    #   address = "10.1.1.3/24";
+    # };
     podman.enable = true;
     mdns.enable = true;
     users.enei = {
@@ -44,6 +47,13 @@
   services.fstrim.enable = true;
   services.fwupd.enable = true;
 
+  fileSystems."/hdd" = {
+    device = "/dev/disk/by-label/hard";
+    fsType = "btrfs";
+    # options = ["subvol=@"];
+  };
+  services.btrfs.autoScrub.enable = true;
+
   networking.hostName = "kista"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -54,40 +64,7 @@
   # Enable networking
   networking.networkmanager.enable = true;
   # networking.networkmanager.unmanaged = ["enp6s0" "wlp7s0"];
-  # networking = {
-  #   wireless = {
-  #     enable = true;
-  #     networks.LANdalf.psk = "INNBOX3130305000979";
-  #     interfaces = ["wlp7s0"];
-  #   };
-  #   interfaces = {
-  #     enp6s0 = {
-  #       ipv4.addresses = [
-  #         {
   #           address = "84.255.199.103";
-  #           prefixLength = 18;
-  #         }
-  #       ];
-  #     };
-  #     wlp7s0 = {
-  #       ipv4.addresses = [
-  #         {
-  #           address = "192.168.64.69";
-  #           prefixLength = 24;
-  #         }
-  #       ];
-  #       ipv4.routes = [
-  #         {
-  #           address = "192.168.64.0";
-  #           prefixLength = 24;
-  #           via = "192.168.64.1";
-  #         }
-  #       ];
-  #     };
-  #   };
-  #   defaultGateway = "84.255.192.1";
-  #   nameservers = ["84.255.209.79"];
-  # };
 
   networking.wireguard.interfaces = {
     here = {
