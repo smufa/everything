@@ -16,6 +16,9 @@
     nil
     manix
     eza
+    firefox-wayland
+    ungoogled-chromium
+    epiphany
     # gitless
   ];
   programs.helix = {
