@@ -61,9 +61,43 @@
   services.flatpak.enable = true;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 23567 5173 ];
-  networking.firewall.allowedUDPPorts = [ 23567 5173 ];
+  networking.firewall.allowedTCPPorts = [ 23567 23568 5173 ];
+  networking.firewall.allowedUDPPorts = [ 23567 23568 5173 5353 ];
   networking.firewall.enable = true;
+
+  networking.wireguard.interfaces = {
+    mesh = {
+      listenPort = 23568;
+
+      privateKeyFile = "/home/enei/wireguard-keys/private";
+    };
+  };
+  
+  services.wgautomesh = {
+    enable = true;
+    openFirewall = true;
+    enablePersistence = true;
+    enableGossipEncryption = true;
+    gossipSecretFile = "/home/enei/wireguard-keys/gossip";
+    settings = {
+      interface = "mesh";
+      lan_discovery = true;
+      peers = [
+        {
+          pubkey = "LYQSaUhHQuI/sr7FHdiZMP1UviDobEYjGxWRGjXni1U=";
+          address = "10.2.2.1";
+          endpoint = "zaanimivo.xyz:23568";
+        }
+
+        {
+          pubkey = "48pSfQjFSFzNQ/aeLQQU39g6RzqId/fvp8Z82GzCZ0A=";
+          address = "10.2.2.2";
+          endpoint = "zaanimivo.xyz:23568";
+        }
+      ];
+    };
+  };
+
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

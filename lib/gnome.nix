@@ -15,7 +15,6 @@ lib.mkIf (config.everything.gnome.enable) {
     ])
     ++ (with pkgs.gnome; [
       gnome-contacts
-      gedit # text editor
       epiphany # web browser
       geary # email reader
       tali # poker game
@@ -69,6 +68,5 @@ lib.mkIf (config.everything.gnome.enable) {
     ++ (with pkgs.gnomeExtensions; [
       appindicator
       caffeine
-      argos
     ]);
 }

@@ -38,7 +38,7 @@ with lib;
         '';
       };
       address = mkOption {
-        type = types.string;
+        type = types.str;
         example = "10.1.1.100/24";
         description = ''
           Desired address on vpn.
