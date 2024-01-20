@@ -66,6 +66,37 @@
   networking.networkmanager.enable = true;
   # networking.networkmanager.unmanaged = ["enp6s0" "wlp7s0"];
   #           address = "84.255.199.103";
+  networking.wireguard.interfaces = {
+    mesh = {
+      listenPort = 23568;
+
+      privateKeyFile = "/home/enei/wireguard-keys/private";
+    };
+  };
+  
+  services.wgautomesh = {
+    enable = true;
+    openFirewall = true;
+    enablePersistence = true;
+    enableGossipEncryption = true;
+    gossipSecretFile = "/home/enei/wireguard-keys/gossip";
+    settings = {
+      interface = "mesh";
+      lan_discovery = true;
+      peers = [
+        {
+          pubkey = "LYQSaUhHQuI/sr7FHdiZMP1UviDobEYjGxWRGjXni1U=";
+          address = "10.2.2.1";
+          endpoint = "zaanimivo.xyz:23568";
+        }
+
+        {
+          pubkey = "KwVT9IJWpvU/qg0LAe23BcLw4IJ8efeJS7xJ0ijhkxQ=";
+          address = "10.2.2.3";
+        }
+      ];
+    };
+  };
 
   networking.wireguard.interfaces = {
     here = {
