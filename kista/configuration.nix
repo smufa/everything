@@ -69,7 +69,7 @@
   networking.wireguard.interfaces = {
     mesh = {
       listenPort = 23568;
-      ips = ["10.2.2.0/24"];
+      ips = ["10.2.2.2/24"];
 
       privateKeyFile = "/home/enei/wireguard-keys/private";
     };
