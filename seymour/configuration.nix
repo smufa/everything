@@ -153,12 +153,12 @@
   # Open ports in the firewall.
   networking.firewall.interfaces.enp3s0f2.allowedTCPPorts = [ 80 443 23567 ];
   networking.firewall.interfaces.enp3s0f2.allowedUDPPorts = [ 80 443 23567 ];
-  networking.firewall.interfaces.lo.allowedTCPPorts = [{from=0; to=65535;}];
-  networking.firewall.interfaces.lo.allowedUDPPorts = [{from=0; to=65535;}];
-  networking.firewall.interfaces.wlp2s0.allowedTCPPorts = [{from=0; to=65535;}];
-  networking.firewall.interfaces.wlp2s0.allowedUDPPorts = [{from=0; to=65535;}];
-  networking.firewall.interfaces.wg0.allowedTCPPorts = [{from=0; to=65535;}];
-  networking.firewall.interfaces.wg0.allowedUDPPorts = [{from=0; to=65535;}];
+  networking.firewall.interfaces.lo.allowedTCPPortRanges = [{from=0; to=65535;}];
+  networking.firewall.interfaces.lo.allowedUDPPortRanges = [{from=0; to=65535;}];
+  networking.firewall.interfaces.wlp2s0.allowedTCPPortRanges = [{from=0; to=65535;}];
+  networking.firewall.interfaces.wlp2s0.allowedUDPPortRanges = [{from=0; to=65535;}];
+  networking.firewall.interfaces.wg0.allowedTCPPortRanges = [{from=0; to=65535;}];
+  networking.firewall.interfaces.wg0.allowedUDPPortRanges = [{from=0; to=65535;}];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
@@ -186,6 +186,16 @@
         '';
       };
     };
+    "karaoke.zaanimivo.xyz" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        root = "/var/www/bububu/";
+        extraConfig = ''
+          try_files $uri $uri/ /index.html =404;
+        '';
+      };
+    };
   };
 
   security.acme = {
@@ -194,6 +204,7 @@
       "enei.zaanimivo.xyz".email = "enei.sluga@gmail.com";
       "zaanimivo.xyz".email = "enei.sluga@gmail.com";
       "zelje.zaanimivo.xyz".email = "enei.sluga@gmail.com";
+      "karaoke.zaanimivo.xyz".email = "enei.sluga@gmail.com";
     };
   };
 
