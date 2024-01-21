@@ -27,7 +27,7 @@
     };
   };
 
-  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+  # boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
 
   networking.hostName = "seymour"; # Define your hostname.
   # Enables wireless support via wpa_supplicant.
@@ -117,6 +117,39 @@
     };
   };
 
+  networking.wireguard.interfaces = {
+    mesh = {
+      listenPort = 23568;
+      ips = ["10.2.2.1/24"];
+
+      privateKeyFile = "/home/enei/.wireguard-keys/private";
+    };
+  };
+  
+  services.wgautomesh = {
+    enable = true;
+    openFirewall = true;
+    enablePersistence = true;
+    enableGossipEncryption = true;
+    gossipSecretFile = "/home/enei/.wireguard-keys/gossip";
+    settings = {
+      interface = "mesh";
+      lan_discovery = true;
+      peers = [
+        {
+          pubkey = "48pSfQjFSFzNQ/aeLQQU39g6RzqId/fvp8Z82GzCZ0A=";
+          address = "10.2.2.2";
+          endpoint = "192.168.64.140:23568";
+        }
+
+        {
+          pubkey = "KwVT9IJWpvU/qg0LAe23BcLw4IJ8efeJS7xJ0ijhkxQ=";
+          address = "10.2.2.3";
+        }
+      ];
+    };
+  };
+
   services.logind.lidSwitch = "ignore";
 
   programs.fish.enable = true;
@@ -151,8 +184,8 @@
   programs.ssh.startAgent = true;
 
   # Open ports in the firewall.
-  networking.firewall.interfaces.enp3s0f2.allowedTCPPorts = [ 80 443 23567 ];
-  networking.firewall.interfaces.enp3s0f2.allowedUDPPorts = [ 80 443 23567 ];
+  networking.firewall.interfaces.enp3s0f2.allowedTCPPorts = [ 80 443 23567 23568 ];
+  networking.firewall.interfaces.enp3s0f2.allowedUDPPorts = [ 80 443 23567 23568 ];
   networking.firewall.interfaces.lo.allowedTCPPorts = [{from=0; to=65535;}];
   networking.firewall.interfaces.lo.allowedUDPPorts = [{from=0; to=65535;}];
   networking.firewall.interfaces.wlp2s0.allowedTCPPorts = [{from=0; to=65535;}];
