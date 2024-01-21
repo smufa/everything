@@ -73,49 +73,6 @@
     nameservers = ["84.255.209.79"];
   };
 
-  # Wireguard setup
-  networking.wireguard.interfaces = {
-    # "wg0" is the network interface name. You can name the interface arbitrarily.
-    wg0 = {
-      # Determines the IP address and subnet of the server's end of the tunnel interface.
-      ips = [ "10.1.1.1/24" ];
-
-      # The port that WireGuard listens to. Must be accessible by the client.
-      listenPort = 23567;
-
-      postSetup = ''
-        ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.1.1.0/24 -o wg0 -j MASQUERADE
-      '';
-
-      # This undoes the above command
-      postShutdown = ''
-        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.1.1.0/24 -o wg0 -j MASQUERADE
-      '';
-
-      # Path to the private key file.
-      #
-      # Note: The private key can also be included inline via the privateKey option,
-      # but this makes the private key world-readable; thus, using privateKeyFile is
-      # recommended.
-      privateKeyFile = "/home/enei/.wireguard-keys/private";
-
-      peers = [
-        # List of allowed peers.
-        { 
-          # laptop enei
-          publicKey = "KwVT9IJWpvU/qg0LAe23BcLw4IJ8efeJS7xJ0ijhkxQ=";
-          # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
-          allowedIPs = [ "10.1.1.2/32" ];
-        }
-        { 
-          # kista enei
-          publicKey = "48pSfQjFSFzNQ/aeLQQU39g6RzqId/fvp8Z82GzCZ0A=";
-          # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
-          allowedIPs = [ "10.1.1.3/32" ];
-        }
-      ];
-    };
-  };
 
   networking.wireguard.interfaces = {
     mesh = {
@@ -184,8 +141,8 @@
   programs.ssh.startAgent = true;
 
   # Open ports in the firewall.
-  networking.firewall.interfaces.enp3s0f2.allowedTCPPorts = [ 80 443 23567 23568 ];
-  networking.firewall.interfaces.enp3s0f2.allowedUDPPorts = [ 80 443 23567 23568 ];
+  networking.firewall.interfaces.enp3s0f2.allowedTCPPorts = [ 80 443 23568 ];
+  networking.firewall.interfaces.enp3s0f2.allowedUDPPorts = [ 80 443 23568 ];
   networking.firewall.interfaces.lo.allowedTCPPorts = [{from=0; to=65535;}];
   networking.firewall.interfaces.lo.allowedUDPPorts = [{from=0; to=65535;}];
   networking.firewall.interfaces.wlp2s0.allowedTCPPorts = [{from=0; to=65535;}];
