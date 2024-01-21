@@ -14,10 +14,10 @@
     slo-locale.enable = true;
     bootloader.enable = true;
     intel-hardware-acceleration.enable = true;
-    vpn = {
-      enable = true;
-      address = "10.1.1.2/24";
-    };
+    # vpn = {
+    #   enable = true;
+    #   address = "10.1.1.2/24";
+    # };
     podman.enable = true;
     mdns.enable = true;
     users.enei = {
@@ -68,6 +68,7 @@
   networking.wireguard.interfaces = {
     mesh = {
       listenPort = 23568;
+      ips = ["10.2.2.0/24"];
 
       privateKeyFile = "/home/enei/wireguard-keys/private";
     };
