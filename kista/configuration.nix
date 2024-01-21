@@ -39,6 +39,7 @@
 
   environment.systemPackages = with pkgs; [
     beep
+    yuzu
   ];
   # boot.initrd.kernelModules = [ "nvidia" ];
   # boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
@@ -65,35 +66,34 @@
   networking.networkmanager.enable = true;
   # networking.networkmanager.unmanaged = ["enp6s0" "wlp7s0"];
   #           address = "84.255.199.103";
-
   networking.wireguard.interfaces = {
-    here = {
-      # Determines the IP address and subnet of the client's end of the tunnel interface.
-      ips = [ "10.1.1.3/24" ];
-      listenPort = 23567; # to match firewall allowedUDPPorts (without this wg uses random port numbers)
+    mesh = {
+      listenPort = 23568;
+      ips = ["10.2.2.2/24"];
 
-      # Path to the private key file.
-      #
-      # Note: The private key can also be included inline via the privateKey option,
-      # but this makes the private key world-readable; thus, using privateKeyFile is
-      # recommended.
       privateKeyFile = "/home/enei/wireguard-keys/private";
-
+    };
+  };
+  
+  services.wgautomesh = {
+    enable = true;
+    openFirewall = true;
+    enablePersistence = true;
+    enableGossipEncryption = true;
+    gossipSecretFile = "/home/enei/wireguard-keys/gossip";
+    settings = {
+      interface = "mesh";
+      lan_discovery = true;
       peers = [
-        # For a client configuration, one peer entry for the server will suffice.
+        {
+          pubkey = "LYQSaUhHQuI/sr7FHdiZMP1UviDobEYjGxWRGjXni1U=";
+          address = "10.2.2.1";
+          endpoint = "zaanimivo.xyz:23568";
+        }
 
         {
-          # Public key of the server (not a file path).
-          publicKey = "LYQSaUhHQuI/sr7FHdiZMP1UviDobEYjGxWRGjXni1U=";
-
-          allowedIPs = [ "10.1.1.0/24" ];
-
-          # Set this to the server IP and port.
-          endpoint = "192.168.64.69:23567"; # ToDo: route to endpoint not automatically configured https://wiki.archlinux.org/index.php/WireGuard#Loop_routing https://discourse.nixos.org/t/solved-minimal-firewall-setup-for-wireguard-client/7577
-          # endpoint = "84.255.199.103:23567"; # ToDo: route to endpoint not automatically configured https://wiki.archlinux.org/index.php/WireGuard#Loop_routing https://discourse.nixos.org/t/solved-minimal-firewall-setup-for-wireguard-client/7577
-
-          # Send keepalives every 25 seconds. Important to keep NAT tables alive.
-          persistentKeepalive = 25;
+          pubkey = "KwVT9IJWpvU/qg0LAe23BcLw4IJ8efeJS7xJ0ijhkxQ=";
+          address = "10.2.2.3";
         }
       ];
     };

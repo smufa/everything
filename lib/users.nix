@@ -9,7 +9,7 @@ in {
       description = user;
       extraGroups = lib.mkMerge [
         (lib.mkIf config.everything.users.${user}.admin 
-            ["networkmanager" "wheel" "uinput" "input"])
+            ["networkmanager" "wheel" "uinput" "input" "plugdev"])
       ];
 
       shell = config.everything.users.${user}.shell;
