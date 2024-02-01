@@ -12,7 +12,7 @@
     gnome.enable = true;
     space-optimization.enable = true; 
     slo-locale.enable = true;
-    bootloader.enable = true;
+    # bootloader.enable = true;
     intel-hardware-acceleration.enable = true;
     # vpn = {
     #   enable = true;
@@ -25,18 +25,12 @@
       shell = pkgs.fish;
     };
   };
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot";
  
   hardware.trackpoint.enable = true;
   hardware.trackpoint.emulateWheel = true;
-
-  # Setup keyfile
-  boot.initrd.secrets = {
-    "/crypto_keyfile.bin" = null;
-  };
-
-  # Enable swap on luks
-  boot.initrd.luks.devices."luks-1d703e15-9079-4c06-a91f-83713d60fd2f".device = "/dev/disk/by-uuid/1d703e15-9079-4c06-a91f-83713d60fd2f";
-  boot.initrd.luks.devices."luks-1d703e15-9079-4c06-a91f-83713d60fd2f".keyFile = "/crypto_keyfile.bin";
 
   networking.hostName = "t460"; # Define your hostname.
 
@@ -97,6 +91,10 @@
         }
       ];
     };
+  };
+  networking.hosts = {
+    "10.2.2.1" = ["seymour"];
+    "10.2.2.2" = ["kista"];
   };
 
 
