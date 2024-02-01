@@ -95,6 +95,12 @@
           pubkey = "KwVT9IJWpvU/qg0LAe23BcLw4IJ8efeJS7xJ0ijhkxQ=";
           address = "10.2.2.3";
         }
+
+        {
+          pubkey = "Pe2KUyql4rS459LSjWCLImVpWxkwS1jjXmRyw9IZSHw=";
+          address = "10.2.2.4";
+          endpoint = "zaanimivo.xyz:23568";
+        }
       ];
     };
   };
