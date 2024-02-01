@@ -90,6 +90,12 @@
           address = "10.2.2.2";
           endpoint = "zaanimivo.xyz:23568";
         }
+
+        {
+          pubkey = "Pe2KUyql4rS459LSjWCLImVpWxkwS1jjXmRyw9IZSHw=";
+          address = "10.2.2.4";
+          endpoint = "zaanimivo.xyz:23568";
+        }
       ];
     };
   };
