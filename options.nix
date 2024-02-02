@@ -49,6 +49,9 @@ with lib;
     beep.enable = mkEnableOption 
     (mdDoc "Whether to enable PC speaker and install beep. WIP");
 
+    gamestream.enable = mkEnableOption 
+    (mdDoc "Whether to enable gamestreaming with Sunshine");
+
     podman = {
       enable = mkEnableOption 
       (mdDoc "Whether to enable container support with podman.");
@@ -84,5 +87,6 @@ with lib;
               ./lib/virtualisation.nix
               ./lib/users.nix 
               ./lib/mdns.nix
+              ./lib/gamestream.nix
             ];
 }

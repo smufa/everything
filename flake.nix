@@ -108,5 +108,27 @@
           }
         ];
       };
+
+      nixosConfigurations.predal = nixpkgs.lib.nixosSystem {
+        modules = [
+          self.nixosModules.everything
+
+          ./predal/configuration.nix
+
+          ({ pkgs, ... }: {
+            nix.registry.nixpkgs.flake = nixpkgs;
+          })
+
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.enei = import ./lib/home.nix {
+              pkgs = builtins.getAttr "x86_64-linux" nixpkgs.legacyPackages;
+              hx-theme = "catpuccin_frappe";
+            };
+          }
+        ];
+      };
     };
 }
