@@ -129,6 +129,75 @@
   # Or disable the firewall altogether.
   networking.firewall.enable = false;
 
+  # virtualisation.oci-containers.backend = "podman";
+  # virtualisation.oci-containers.containers = {
+  #   notebook = {
+  #     hostname = "notebook";
+  #     image = "library/fedora";
+  # #     # image = "jupyter/scipy-notebook";
+  # #     # extraOptions = ["--ip=0.0.0.0" "--NotebookApp.password=sha1:137775e93d29:ba64d3b78e089f0f779167242ddb080a05c42a84"];
+  # #     # entrypoint = "/bin/bash";
+  #     autoStart = true;
+  #     ports = [ "127.0.0.1:8888:8888" ];
+  #   };
+  # };
+
+  # containers.notebook = let 
+  #   python = (pkgs.python311.withPackages (ps: with ps; [
+  #               numpy
+  #               pandas
+  #               scipy
+  #               matplotlib
+  #               networkx
+  #               ipykernel
+  #               python-lsp-server
+  #               jupyterlab
+  #               jupyterlab-lsp
+  #               jupyterlab-widgets
+  #               jupyterlab-server
+  #               jupyter-collaboration
+  #               # jupyterlab-git
+  #               ipywidgets
+  #             ])); 
+  #   in {
+  #   autoStart = true;
+  #   config = { config, pkgs, lib, ... }: {
+
+  #     systemd.services.notebook = {
+  #        wantedBy = [ "multi-user.target" ];
+  #        after = [ "network.target" ];
+  #        description = "Collaborative Notebook.";
+  #        serviceConfig = {
+  #          # the command to execute when the service starts up 
+  #          ExecStart = ''${python}/bin/python -m jupyterlab --ip=0.0.0.0 --notebook-dir=/home/ina/ --no-browser --NotebookApp.password=sha1:137775e93d29:ba64d3b78e089f0f779167242ddb080a05c42a84''; 
+  #          User = "ina";
+  #          # Group = "ina";
+  #          Restart = "always";
+  #          RestartSec = "10";
+  #        };
+  #     };
+  #     # environment.systemPackages = [ python ];
+  #     users.users.ina = {
+  #       isNormalUser = true;
+  #       packages = [ python ];
+  #     };
+
+  #     system.stateVersion = "23.11";
+
+  #     networking = {
+  #       firewall = {
+  #         enable = true;
+  #         allowedTCPPorts = [ 8888 ];
+  #       };
+  #       # Use systemd-resolved inside the container
+  #       # Workaround for bug https://github.com/NixOS/nixpkgs/issues/162686
+  #       useHostResolvConf = lib.mkForce false;
+  #     };
+  #     services.resolved.enable = true;
+
+  #   };
+  # };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
