@@ -147,14 +147,16 @@
   programs.ssh.startAgent = true;
 
   # Open ports in the firewall.
-  networking.firewall.interfaces.enp3s0f2.allowedTCPPorts = [ 80 443 23568 ];
-  networking.firewall.interfaces.enp3s0f2.allowedUDPPorts = [ 80 443 23568 ];
+  networking.firewall.interfaces.enp3s0f2.allowedTCPPorts = [ 80 443 1666 23568 ];
+  networking.firewall.interfaces.enp3s0f2.allowedUDPPorts = [ 80 443 1666 23568 ];
   networking.firewall.interfaces.lo.allowedTCPPortRanges = [{from=0; to=65535;}];
   networking.firewall.interfaces.lo.allowedUDPPortRanges = [{from=0; to=65535;}];
   networking.firewall.interfaces.wlp2s0.allowedTCPPortRanges = [{from=0; to=65535;}];
   networking.firewall.interfaces.wlp2s0.allowedUDPPortRanges = [{from=0; to=65535;}];
-  networking.firewall.interfaces.wg0.allowedTCPPortRanges = [{from=0; to=65535;}];
-  networking.firewall.interfaces.wg0.allowedUDPPortRanges = [{from=0; to=65535;}];
+  # networking.firewall.interfaces.wg0.allowedTCPPortRanges = [{from=0; to=65535;}];
+  # networking.firewall.interfaces.wg0.allowedUDPPortRanges = [{from=0; to=65535;}];
+  networking.firewall.interfaces.mesh.allowedTCPPortRanges = [{from=0; to=65535;}];
+  networking.firewall.interfaces.mesh.allowedUDPPortRanges = [{from=0; to=65535;}];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
@@ -192,6 +194,16 @@
         '';
       };
     };
+    "pivo.zaanimivo.xyz" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        root = "/var/www/pivo/";
+        extraConfig = ''
+          try_files $uri $uri/ /index.html =404;
+        '';
+      };
+    };
   };
 
   security.acme = {
@@ -201,6 +213,7 @@
       "zaanimivo.xyz".email = "enei.sluga@gmail.com";
       "zelje.zaanimivo.xyz".email = "enei.sluga@gmail.com";
       "karaoke.zaanimivo.xyz".email = "enei.sluga@gmail.com";
+      "pivo.zaanimivo.xyz".email = "enei.sluga@gmail.com";
     };
   };
 
