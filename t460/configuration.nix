@@ -102,6 +102,7 @@
   networking.hosts = {
     "10.2.2.1" = ["seymour"];
     "10.2.2.2" = ["kista"];
+    "10.2.2.4" = ["predal"];
   };
 
 
