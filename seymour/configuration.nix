@@ -27,7 +27,7 @@
     };
   };
 
-  # boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
 
   networking.hostName = "seymour"; # Define your hostname.
   # Enables wireless support via wpa_supplicant.
@@ -147,6 +147,7 @@
   programs.ssh.startAgent = true;
 
   # Open ports in the firewall.
+  networking.nftables.enable = true;
   networking.firewall.interfaces.enp3s0f2.allowedTCPPorts = [ 80 443 1666 23568 ];
   networking.firewall.interfaces.enp3s0f2.allowedUDPPorts = [ 80 443 1666 23568 ];
   networking.firewall.interfaces.lo.allowedTCPPortRanges = [{from=0; to=65535;}];
@@ -159,6 +160,19 @@
   networking.firewall.interfaces.mesh.allowedUDPPortRanges = [{from=0; to=65535;}];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+  networking.nftables.ruleset = ''
+    table ip temp_passover {
+      chain prerouting {
+        type nat hook prerouting priority dstnat;
+        iifname "mesh" tcp dport {3000, 8889, 8888, 2222, 11434} dnat to 10.2.2.2
+        iifname "enp3s0f2" tcp dport {3000} dnat to 10.2.2.2
+      }
+      chain postrouting {
+        type nat hook postrouting priority srcnat;
+        oifname "mesh" masquerade
+      } 
+    }
+  '';
 
   services.nginx.enable = true;
   services.nginx.virtualHosts = {
@@ -174,11 +188,19 @@
       enableACME = true;
       root = "/page/enei";
     };
+    "nlp.zaanimivo.xyz" = {
+      forceSSL = true;
+      enableACME = true;
+      serverName = "nlp.zaanimivo.xyz";
+      locations."/" = {
+        proxyPass = "http://kista:8888";
+      };
+    };
     "zelje.zaanimivo.xyz" = {
       forceSSL = true;
       enableACME = true;
       locations."/" = {
-        root = "/var/www/bubu/";
+        root = "/var/www/bububu/";
         extraConfig = ''
           try_files $uri $uri/ /index.html =404;
         '';
@@ -188,7 +210,7 @@
       forceSSL = true;
       enableACME = true;
       locations."/" = {
-        root = "/var/www/bububu/";
+        root = "/var/www/bubu/";
         extraConfig = ''
           try_files $uri $uri/ /index.html =404;
         '';
@@ -213,6 +235,7 @@
       "zaanimivo.xyz".email = "enei.sluga@gmail.com";
       "zelje.zaanimivo.xyz".email = "enei.sluga@gmail.com";
       "karaoke.zaanimivo.xyz".email = "enei.sluga@gmail.com";
+      "nlp.zaanimivo.xyz".email = "enei.sluga@gmail.com";
       "pivo.zaanimivo.xyz".email = "enei.sluga@gmail.com";
     };
   };
